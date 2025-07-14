@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubix: Modelo de Negocio Interactivo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Verde Confianza" - Una paleta minimalista con un fondo neutro claro, tonos de gris para el texto y un verde inspirado en WhatsApp como color de acento principal para inspirar confianza, crecimiento y familiaridad. Se usa un azul sutil para elementos secundarios. -->
+    <!-- Application Structure Plan: Se diseñó una SPA de desplazamiento vertical con una barra de navegación fija. La estructura sigue un flujo narrativo para inversionistas: 1) Pitch inicial (Resumen Ejecutivo). 2) ¿Cómo Funciona? (Sección interactiva con pestañas para mostrar el flujo de usuario, la parte más crítica). 3) Modelo de Negocio (Visualización tipo Business Model Canvas en una cuadrícula). 4) Ecosistema (Diagrama de roles). 5) Mercado y Crecimiento (Combina segmentos de clientes con un gráfico y el modelo de canales). 6) Ventaja Competitiva. Esta estructura es más persuasiva y fácil de seguir que el orden original del documento, ya que prioriza la comprensión del producto y su funcionamiento antes de detallar todos los componentes del canvas. -->
+    <!-- Visualization & Content Choices: 1) Flujo de Usuario: Reporte Info -> Pasos de invitación, abono y canje. Goal -> Organizar/Explicar. Viz -> Pestañas interactivas (HTML/CSS/JS) para guiar al usuario paso a paso. Justification -> Mucho más claro y atractivo que una lista de texto. 2) Segmentos de Mercado: Reporte Info -> Lista de tipos de negocio. Goal -> Informar/Comparar. Viz -> Gráfico de dona (Chart.js) para mostrar la composición del mercado objetivo. Justification -> Aporta un elemento visual cuantitativo y profesional. 3) Ecosistema de Roles: Reporte Info -> Descripción de Negocio, Agente, Sales Rep, Staff. Goal -> Organizar/Relacionar. Viz -> Tarjetas en una cuadrícula (HTML/Tailwind) para definir claramente cada rol y su función. Justification -> Facilita la comparación y comprensión de la estructura operativa. 4) Modelo de Negocio: Reporte Info -> Componentes del Business Model. Goal -> Informar/Organizar. Viz -> Cuadrícula interactiva que simula el Canvas. Justification -> Ofrece un resumen visual y familiar para un público de negocios. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .active-nav { color: #10B981; font-weight: 600; }
+        .tab-btn.active { background-color: #10B981; color: white; }
+        .tab-btn { transition: all 0.3s ease; }
+        .content-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .content-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#pitch"><img src="http://googleusercontent.com/file_content/1" alt="Clubix Logo" class="h-9 w-auto"></a>
+            <ul class="hidden md:flex space-x-8 text-sm font-medium items-center">
+                <li><a href="#pitch" class="hover:text-emerald-500 transition-colors">El Pitch</a></li>
+                <li><a href="#como-funciona" class="hover:text-emerald-500 transition-colors">¿Cómo Funciona?</a></li>
+                <li><a href="#modelo" class="hover:text-emerald-500 transition-colors">Modelo de Negocio</a></li>
+                <li><a href="#mercado" class="hover:text-emerald-500 transition-colors">Mercado</a></li>
+                <li><a href="#ventaja" class="hover:text-emerald-500 transition-colors">Ventaja</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="pitch" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold text-slate-800 leading-tight">La lealtad de clientes, simplificada.</h2>
+                <p class="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-slate-600">Clubix transforma WhatsApp en una potente herramienta de fidelización para PyMEs. Sin apps adicionales, sin fricción. Solo crecimiento y clientes felices.</p>
+                <div class="mt-10">
+                    <a href="#como-funciona" class="bg-emerald-500 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-emerald-600 transition-all">Descubre cómo</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="como-funciona" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-800">Una Experiencia Fluida en WhatsApp</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Hemos diseñado un flujo intuitivo que se siente natural tanto para el negocio como para su cliente. Todo sucede dentro de la conversación de WhatsApp que ya conocen.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <div class="mb-8 flex justify-center border border-slate-200 rounded-lg p-1 bg-slate-100">
+                        <button id="tab-btn-1" class="tab-btn flex-1 p-3 rounded-md font-semibold text-sm md:text-base active">Paso 1: Invitar</button>
+                        <button id="tab-btn-2" class="tab-btn flex-1 p-3 rounded-md font-semibold text-sm md:text-base">Paso 2: Acumular Puntos</button>
+                        <button id="tab-btn-3" class="tab-btn flex-1 p-3 rounded-md font-semibold text-sm md:text-base">Paso 3: Canjear Recompensa</button>
+                    </div>
+
+                    <div id="tab-content-1" class="tab-content">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                                <h4 class="font-bold text-xl text-emerald-600 mb-2">Acción del Negocio</h4>
+                                <p class="text-slate-600">Usa la opción <span class="font-semibold text-slate-800">"Invitar Cliente"</span> y teclea el número de teléfono. Así de simple.</p>
+                            </div>
+                            <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                                <h4 class="font-bold text-xl text-blue-600 mb-2">Reacción del Cliente</h4>
+                                <p class="text-slate-600">Recibe un mensaje de invitación. Con solo pulsar <span class="font-semibold text-slate-800">"Aceptar"</span>, queda vinculado al programa.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-content-2" class="tab-content hidden">
+                        <div class="grid md:grid-cols-2 gap-8 items-center">
+                            <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                                <h4 class="font-bold text-xl text-emerald-600 mb-2">Acción del Negocio</h4>
+                                <p class="text-slate-600">En cada compra, utiliza <span class="font-semibold text-slate-800">"Abonar Saldo"</span> para agregar puntos al instante.</p>
+                            </div>
+                            <div class="bg-white p-8 rounded-xl shadow-md border border-slate-200">
+                                <h4 class="font-bold text-xl text-blue-600 mb-2">Reacción del Cliente</h4>
+                                <p class="text-slate-600">Recibe una notificación inmediata en WhatsApp con su saldo actualizado. Transparencia total.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab-content-3" class="tab-content hidden">
+                        <div class="grid md:grid-cols-1 gap-4">
+                            <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 text-center">
+                                <p class="text-slate-600"><span class="font-bold text-blue-600">1. Cliente:</span> Usa la opción <span class="font-semibold">"Solicitar Canje"</span> y recibe un código único.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 text-center">
+                                <p class="text-slate-600"><span class="font-bold text-emerald-600">2. Negocio:</span> El cliente muestra el código. El negocio usa <span class="font-semibold">"Aplicar Canje"</span> e introduce el código.</p>
+                            </div>
+                             <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 text-center">
+                                <p class="text-slate-600"><span class="font-bold text-slate-800">3. ¡Listo!</span> Ambos reciben una notificación de la operación exitosa. El saldo se actualiza automáticamente.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modelo" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-800">Nuestro Modelo de Negocio</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Hemos construido un ecosistema sostenible donde todos los participantes obtienen un valor claro y medible.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-slate-100/70 p-6 rounded-xl content-card">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">🎯 Propuesta de Valor</h4>
+                        <p class="text-sm text-slate-600">Fidelización sin fricción para PyMEs y comodidad absoluta para sus clientes, todo sobre WhatsApp.</p>
+                    </div>
+                    <div class="bg-slate-100/70 p-6 rounded-xl content-card">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">👥 Segmentos de Clientes</h4>
+                        <p class="text-sm text-slate-600">PyMEs que dependen de la recurrencia: cafeterías, estéticas, restaurantes, tiendas locales, servicios y más.</p>
+                    </div>
+                    <div class="bg-slate-100/70 p-6 rounded-xl content-card">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">🚀 Canales</h4>
+                        <p class="text-sm text-slate-600">Una red de Representantes de Ventas (Sales Reps) comisionistas que aseguran una expansión rápida y escalable.</p>
+                    </div>
+                    <div class="bg-slate-100/70 p-6 rounded-xl content-card">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">🤝 Relación con Clientes</h4>
+                        <p class="text-sm text-slate-600">Directa, simple y 100% digital a través de la interfaz de WhatsApp. Soporte intuitivo con comandos simples.</p>
+                    </div>
+                    <div class="bg-slate-100/70 p-6 rounded-xl content-card col-span-1 md:col-span-2 lg:col-span-1">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">💰 Fuentes de Ingresos</h4>
+                        <p class="text-sm text-slate-600">Modelo SaaS (Software as a Service) con suscripciones mensuales o anuales para los negocios. Pagos seguros vía Stripe.</p>
+                    </div>
+                    <div class="bg-slate-100/70 p-6 rounded-xl content-card">
+                        <h4 class="font-bold text-lg mb-2 text-slate-800">🧩 Ecosistema de Roles</h4>
+                        <p class="text-sm text-slate-600">Roles claros y definidos: Negocio (Admin), Agente (Empleado), Sales Rep (Ventas) y Staff Clubix (Soporte a ventas).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mercado" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-800">Mercado Objetivo y Crecimiento</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Nos enfocamos en un amplio mercado de PyMEs y lo alcanzamos a través de un modelo de crecimiento inteligente.</p>
+                </div>
+                <div class="grid lg:grid-cols-5 gap-12 items-center">
+                    <div class="lg:col-span-2">
+                        <h4 class="font-bold text-2xl text-slate-800 mb-4">Segmentos Clave</h4>
+                        <p class="text-slate-600 mb-6">Nuestro mercado es diverso y abarca cualquier negocio con clientes recurrentes. Aquí se muestra una distribución típica de nuestro enfoque inicial.</p>
+                         <div class="space-y-3 text-sm">
+                            <p class="flex items-center"><span class="h-3 w-3 rounded-full bg-emerald-500 mr-3"></span> Cafeterías y Restaurantes</p>
+                            <p class="flex items-center"><span class="h-3 w-3 rounded-full bg-blue-500 mr-3"></span> Barberías y Estéticas</p>
+                            <p class="flex items-center"><span class="h-3 w-3 rounded-full bg-amber-500 mr-3"></span> Tiendas y Abarrotes</p>
+                            <p class="flex items-center"><span class="h-3 w-3 rounded-full bg-indigo-500 mr-3"></span> Servicios (Lavanderías, etc.)</p>
+                            <p class="flex items-center"><span class="h-3 w-3 rounded-full bg-rose-500 mr-3"></span> Otros (Gimnasios, etc.)</p>
+                        </div>
+                    </div>
+                    <div class="lg:col-span-3">
+                        <div class="chart-container relative mx-auto" style="max-width: 400px; height: 350px; max-height: 400px;">
+                            <canvas id="marketChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="ventaja" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-slate-800">Nuestra Ventaja Competitiva</h3>
+                    <p class="mt-4 max-w-2xl mx-auto text-slate-600">Tres pilares fundamentales nos diferencian y aseguran nuestro éxito a largo plazo.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="border border-slate-200 bg-slate-50/50 rounded-xl p-8 content-card">
+                        <div class="text-4xl mb-4">📱</div>
+                        <h4 class="font-bold text-xl mb-2 text-slate-800">Tecnología Universal</h4>
+                        <p class="text-slate-600">Nos apalancamos de la API de WhatsApp, una plataforma robusta y usada por miles de millones. Cero barreras de adopción.</p>
+                    </div>
+                    <div class="border border-slate-200 bg-slate-50/50 rounded-xl p-8 content-card">
+                        <div class="text-4xl mb-4">💳</div>
+                        <h4 class="font-bold text-xl mb-2 text-slate-800">Seguridad en Pagos</h4>
+                        <p class="text-slate-600">La alianza con Stripe para procesar suscripciones nos da credibilidad y seguridad de clase mundial desde el día uno.</p>
+                    </div>
+                    <div class="border border-slate-200 bg-slate-50/50 rounded-xl p-8 content-card">
+                        <div class="text-4xl mb-4">📈</div>
+                        <h4 class="font-bold text-xl mb-2 text-slate-800">Crecimiento Escalable</h4>
+                        <p class="text-slate-600">El modelo de Sales Reps comisionistas (20% recurrente) permite una expansión rápida con una inversión controlada.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <img src="http://googleusercontent.com/file_content/1" alt="Clubix Logo" class="h-8 w-auto mx-auto mb-4 filter invert brightness-0">
+            <p class="text-slate-400">Reimaginando la lealtad de clientes.</p>
+            <p class="text-xs text-slate-500 mt-6">&copy; 2025 Clubix. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    const contentId = tab.id.replace('btn', 'content');
+                    document.getElementById(contentId).classList.remove('hidden');
+                });
+            });
+
+            const marketChartCtx = document.getElementById('marketChart').getContext('2d');
+            const marketChart = new Chart(marketChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'Cafeterías y Restaurantes', 
+                        'Barberías y Estéticas', 
+                        'Tiendas y Abarrotes', 
+                        'Servicios (Lavanderías, etc.)', 
+                        'Otros (Gimnasios, etc.)'
+                    ],
+                    datasets: [{
+                        label: 'Segmentos de Mercado',
+                        data: [30, 25, 20, 15, 10],
+                        backgroundColor: [
+                            '#10B981', // emerald-500
+                            '#3B82F6', // blue-500
+                            '#F59E0B', // amber-500
+                            '#6366F1', // indigo-500
+                            '#F43F5E'  // rose-500
+                        ],
+                        borderColor: '#F9FAFB', // bg-slate-50
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('nav a[href^="#"]');
+            const sections = document.querySelectorAll('main section');
+
+            function changeNav() {
+                let index = sections.length;
+                while(--index && window.scrollY + 50 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active-nav'));
+                const activeLink = document.querySelector(`nav a[href="#${sections[index].id}"]`);
+                if(activeLink) {
+                    activeLink.classList.add('active-nav');
+                }
+            }
+
+            changeNav();
+            window.addEventListener('scroll', changeNav);
+        });
+    </script>
+
+</body>
+</html>
